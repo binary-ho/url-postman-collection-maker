@@ -17,7 +17,7 @@
 import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import { loadConfigSafe } from './config/index';
+import { loadConfigSafe } from '@/config';
 import { createBrowserController, extractUniqueUrls } from './modules/browserController';
 import { createDataProcessor } from './modules/dataProcessor';
 import { createAiGenerator } from './modules/aiGenerator';
@@ -26,7 +26,7 @@ import {
   NetworkLogCollection, 
   ErrorCategory, 
   AppError 
-} from './types/index';
+} from '@/types';
 
 // ============================================================================
 // CLI Application Class
@@ -194,14 +194,19 @@ export class MockGenCLI {
       
       // Create a temporary file with URLs for gum choose
       const tempFile = path.join(process.cwd(), '.temp_urls.txt');
-      const urlOptions = uniqueUrls.map((url, index) => {
-        try {
-          const urlObj = new URL(url);
-          return `${index + 1}. ${urlObj.pathname}${urlObj.search} (${urlObj.hostname})`;
-        } catch {
-          return `${index + 1}. ${url}`;
-        }
-      });
+      
+      // Add "Select All URLs" option at the top
+      const selectAllOption = '🌐 Select All URLs (Process all captured URLs)';
+      const urlOptions = [selectAllOption].concat(
+        uniqueUrls.map((url, index) => {
+          try {
+            const urlObj = new URL(url);
+            return `${index + 1}. ${urlObj.pathname}${urlObj.search} (${urlObj.hostname})`;
+          } catch {
+            return `${index + 1}. ${url}`;
+          }
+        })
+      );
       
       fs.writeFileSync(tempFile, urlOptions.join('\n'));
       
@@ -218,7 +223,15 @@ export class MockGenCLI {
           return logs;
         }
         
-        // Extract selected URLs based on user choice
+        // Check if "Select All URLs" option was selected
+        const selectAllSelected = selectedOptions.some(option => option.includes('🌐 Select All URLs'));
+        
+        if (selectAllSelected) {
+          console.log(`✅ Selected all URLs for processing (${uniqueUrls.length} URLs, ${logs.length} total requests)\n`);
+          return logs;
+        }
+        
+        // Extract selected URLs based on user choice (individual selection)
         const selectedUrls = selectedOptions.map(option => {
           const match = option.match(/^(\d+)\./);
           if (match && match[1]) {
