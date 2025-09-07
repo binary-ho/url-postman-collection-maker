@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# IDE and editor files
+.idea/
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Optional npm cache directory
+.npm
+
+# Generated Postman collections (optional - users might want to keep these)
+*postman_collection*.json
+
+# Playwright browsers
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# AI 생성 문서 파일
+/docs

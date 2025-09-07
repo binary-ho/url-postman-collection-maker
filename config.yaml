@@ -1,0 +1,112 @@
+# MockGen AI Configuration File
+# This file contains all configuration options for the MockGen AI application.
+# You can customize these settings to match your specific requirements.
+#
+# IMPORTANT: Only sensitive information (API key and allowed_hosts) can be overridden by environment variables!
+# For better security, use .env file for API key and allowed_hosts only.
+# Copy .env.example to .env and set your sensitive values there.
+
+# ============================================================================
+# AI Configuration
+# ============================================================================
+
+ai:
+  # Google AI Studio API key for Gemini
+  # RECOMMENDED: Use .env file for security (this setting can be overridden by environment variable)
+  # 
+  # Method 1 (Recommended): Copy .env.example to .env and set AI_API_KEY there
+  # Method 2: Set environment variable: export AI_API_KEY="your-key"
+  # Method 3: Set directly here (not recommended for security)
+  #
+  # Get your API key from: https://makersuite.google.com/app/apikey
+  # Leave empty to use environment variable only
+  api_key: "YOUR_GEMINI_API_KEY"  # .env 파일에서 설정
+
+  # Gemini model to use for collection generation
+  # Available models:
+  #   - gemini-1.5-pro-latest (recommended for best quality)
+  #   - gemini-1.5-flash-latest (faster, lower cost)
+  #   - gemini-1.0-pro-latest (legacy model)
+  model_name: "gemini-2.5-flash-latest"
+
+  # Path to the AI prompt template file
+  # This template defines how the AI generates Postman Collections
+  prompt_template_path: "./prompts/collection_generator.txt"
+
+# ============================================================================
+# Output Configuration
+# ============================================================================
+output:
+  # Default filename for generated Postman collections
+  # The file will be saved in the current working directory
+  # You can include a path: "collections/my_collection.json"
+  default_filename: "postman_collection.json"
+
+# ============================================================================
+# Network Request Filtering
+# ============================================================================
+filter:
+  # List of allowed host names for network request filtering
+  # Only requests to these hosts will be captured and processed
+  # If this list is empty, ALL hosts will be captured (not recommended for production sites)
+  # 
+  # This setting can be overridden by MOCKGEN_ALLOWED_HOSTS environment variable
+  # Environment variable format: comma-separated list (e.g., "api.example.com,staging.example.com")
+  # 
+  # Examples for different environments:
+  allowed_hosts:
+    # Production API hosts
+    - "api.global.oliveyoung.com"
+    - "stg-api.global.oliveyoung.com"
+    
+    # Development and testing hosts
+    # - "localhost:3000"
+    # - "localhost:8080"
+    # - "dev-api.example.com"
+    # - "staging-api.example.com"
+    
+    # Third-party API hosts (if needed)
+    # - "api.stripe.com"
+    # - "api.github.com"
+    # - "jsonplaceholder.typicode.com"
+
+# ============================================================================
+# Usage Instructions
+# ============================================================================
+# 
+# 1. Set your Gemini API key (SENSITIVE - can use environment variable):
+#    - Method 1 (Recommended): Copy .env.example to .env and set AI_API_KEY
+#    - Method 2: Set environment variable: export AI_API_KEY="your-key"
+#    - Method 3: Replace "YOUR_GEMINI_API_KEY" above with your actual key (not recommended)
+#    - Get your key from: https://makersuite.google.com/app/apikey
+#
+# 2. Configure allowed hosts (SENSITIVE - can use environment variable):
+#    - Method 1 (Recommended): Set MOCKGEN_ALLOWED_HOSTS in .env file
+#    - Method 2: Set environment variable: export MOCKGEN_ALLOWED_HOSTS="host1,host2"
+#    - Method 3: Edit the allowed_hosts list above
+#    - Use exact hostnames (e.g., "api.example.com", not "https://api.example.com")
+#
+# 3. Configure other settings (config.yaml only):
+#    - model_name: Choose your preferred Gemini model
+#    - prompt_template_path: Path to AI prompt template
+#    - default_filename: Output file name and path
+#
+# 4. Run MockGen AI:
+#    - Execute: just mock
+#    - Or: npx ts-node src/cli.ts
+#
+# ============================================================================
+# Security Notes
+# ============================================================================
+#
+# - Never commit your actual API key to version control
+# - Use .env file for sensitive information (API key and allowed_hosts)
+# - Keep your API key secure and don't share it
+# - Regularly rotate your API keys for security
+# - Only API key and allowed_hosts can be overridden by environment variables
+#
+# Environment variable setup:
+#   export AI_API_KEY="your-actual-api-key-here"
+#   export MOCKGEN_ALLOWED_HOSTS="api.example.com,staging.example.com"
+#
+# ============================================================================
