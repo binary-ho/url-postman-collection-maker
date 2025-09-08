@@ -19,6 +19,7 @@ import {
   PostmanCollection,
   isPostmanCollection
 } from '../types/index';
+import * as console from "node:console";
 
 // ============================================================================
 // AI Generator Configuration
@@ -330,10 +331,11 @@ export class AiGenerator {
       const aiResponse = await this.callGeminiApi(promptResult.prompt);
 
       // Step 4: Validate response
-      console.log('🔍 Validating AI response...');
+      console.log(`🔍 Validating AI response... ${aiResponse}`);
       const validation = this.validateAiResponse(aiResponse);
-      
+
       if (!validation.isValid) {
+        console.error('❌ AI response validation failed:', validation.error);
         return {
           success: false,
           error: `AI response validation failed: ${validation.error}`,

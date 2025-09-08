@@ -17,7 +17,6 @@
 import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import { loadConfigSafe } from '@/config';
 import { createBrowserController, extractUniqueUrls } from './modules/browserController';
 import { createDataProcessor } from './modules/dataProcessor';
 import { createAiGenerator } from './modules/aiGenerator';
@@ -27,6 +26,7 @@ import {
   ErrorCategory, 
   AppError 
 } from '@/types';
+import {loadConfigSafe} from "@/config";
 
 // ============================================================================
 // CLI Application Class
@@ -87,10 +87,35 @@ export class MockGenCLI {
   }
 
   /**
-   * Gets URL input from user using gum
+   * Gets URL input from user using gum or from environment variable
    */
   private async getUserUrl(): Promise<string> {
     try {
+      // Load .env file first to ensure environment variables are available
+      const envPath = path.resolve('.env');
+      if (fs.existsSync(envPath)) {
+        require('dotenv').config({ path: envPath });
+      }
+      
+      // Check if default URL is set in environment variable
+      const defaultUrl = process.env['MOCKGEN_DEFAULT_URL'];
+      
+      if (defaultUrl && defaultUrl.trim()) {
+        const url = defaultUrl.trim();
+        
+        // Validate the default URL
+        try {
+          new URL(url);
+        } catch {
+          throw this.createCliError('INVALID_DEFAULT_URL', `Invalid default URL format: ${url}`, 'Please provide a valid HTTP or HTTPS URL in MOCKGEN_DEFAULT_URL environment variable');
+        }
+        
+        console.log('🔗 Using default URL from environment variable:');
+        console.log(`✅ URL: ${url}\n`);
+        return url;
+      }
+      
+      // No default URL set, prompt user for input
       console.log('📝 Please enter the URL you want to analyze:');
       
       const result = execSync('gum input --placeholder "Enter website URL (e.g., https://example.com)..."', {

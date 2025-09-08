@@ -27,7 +27,7 @@ ai:
   #   - gemini-1.5-pro-latest (recommended for best quality)
   #   - gemini-1.5-flash-latest (faster, lower cost)
   #   - gemini-1.0-pro-latest (legacy model)
-  model_name: "gemini-2.5-flash-latest"
+  model_name: "gemini-2.0-flash"
 
   # Path to the AI prompt template file
   # This template defines how the AI generates Postman Collections

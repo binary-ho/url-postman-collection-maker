@@ -12,7 +12,7 @@ setup:
 # Run MockGen AI to generate Postman Collection (main user command)
 mock:
     @echo "🚀 Starting MockGen AI..."
-    npx ts-node src/cli.ts
+    npx ts-node -r tsconfig-paths/register src/cli.ts
 
 # Run all tests
 test:

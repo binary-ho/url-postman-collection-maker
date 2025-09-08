@@ -142,14 +142,18 @@ MockGen AI는 다음 7단계로 작동합니다:
 
 MockGen AI는 민감한 정보만 환경 변수로 관리합니다. 다음 환경 변수들은 config.yaml 설정을 덮어씁니다:
 
-### 지원되는 환경 변수 (민감한 정보만)
+### 지원되는 환경 변수
 
 | 환경 변수 | 설명 | 예시 |
 |-----------|------|------|
+| `MOCKGEN_DEFAULT_URL` | 기본 URL (선택사항) | `https://global.oliveyoung.com` |
 | `AI_API_KEY` | Google Gemini API 키 (필수) | `your-api-key-here` |
 | `MOCKGEN_ALLOWED_HOSTS` | 허용된 호스트 (쉼표로 구분) | `api.example.com,staging.example.com` |
 
-**참고**: 다른 설정들(모델명, 프롬프트 경로, 출력 파일명)은 config.yaml에서만 관리됩니다.
+**참고**: 
+- `MOCKGEN_DEFAULT_URL`이 설정되면 URL 입력 단계를 건너뛰고 해당 URL을 자동으로 사용합니다
+- API 키와 allowed_hosts는 민감한 정보로 환경 변수 관리를 권장합니다
+- 다른 설정들(모델명, 프롬프트 경로, 출력 파일명)은 config.yaml에서만 관리됩니다
 
 ### .env 파일 사용법
 
@@ -158,8 +162,11 @@ MockGen AI는 민감한 정보만 환경 변수로 관리합니다. 다음 환�
    cp .env.example .env
    ```
 
-2. **.env 파일 편집** (민감한 정보만):
+2. **.env 파일 편집**:
    ```bash
+   # 선택사항: 기본 URL 설정 (설정 시 URL 입력 단계 건너뛰기)
+   MOCKGEN_DEFAULT_URL=https://global.oliveyoung.com
+   
    # 필수: API 키 설정
    AI_API_KEY=your-actual-api-key-here
    

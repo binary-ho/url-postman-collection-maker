@@ -73,12 +73,28 @@ For each item, create a complete request object:
 
 For EACH item, you MUST create exactly THREE response examples:
 
+**ABSOLUTE CRITICAL RULE: MAXIMUM BODY LENGTH 100 CHARACTERS**
+- **Response Body**: MUST NEVER exceed 100 characters. If longer, truncate IMMEDIATELY
+- **originalRequest Body**: MUST NEVER exceed 100 characters. If longer, truncate IMMEDIATELY  
+- **NO EXCEPTIONS**: Any body longer than 100 characters will cause JSON parsing errors
+- Always ensure truncated JSON remains parseable and syntactically correct
+- Use "...truncated" to indicate truncation
+- **EXAMPLE OF CORRECT LENGTH**: `{"data":[{"id":1,"name":"item1"}],"total":5,"...":"truncated"}`
+
 ### 1. Success Response (200 OK)
 - Name: "200 - Success"
-- Use the actual response data from the provided network logs
+- Use the actual response data from the provided network logs, but LIMIT the body length
 - Status: 200, "OK"
 - Headers: `[{"key": "Content-Type", "value": "application/json"}]`
-- Body: The actual JSON response from the logs
+- Body: **ABSOLUTE 100 CHARACTER LIMIT - NO EXCEPTIONS**: 
+  - MUST be under 100 characters total
+  - Truncate arrays to 1-2 items maximum
+  - Keep only essential fields
+  - Example: `{"data":[{"id":1}],"total":10,"...":"truncated"}`
+- originalRequest: **ABSOLUTE 100 CHARACTER LIMIT FOR originalRequest BODY**:
+  - MUST be under 100 characters total
+  - Keep only essential request fields
+  - Example: `{"key":"value","...":"truncated"}`
 
 ### 2. No Content Response (204 No Content)
 - Name: "204 - No Content"  
@@ -126,5 +142,8 @@ Your output must be a valid JSON object that can be imported directly into Postm
 - All three response examples exist for each item
 - Headers are properly formatted as arrays of objects
 - Query parameters are properly structured
+- **CRITICAL**: ALL response bodies and originalRequest bodies are under 100 characters
+- **CRITICAL**: No body exceeds the 100 character limit under any circumstances
 
 Remember: Output ONLY the JSON object, no additional text, explanations, or formatting.
+**FINAL WARNING**: Any response body longer than 100 characters will cause parsing errors!
