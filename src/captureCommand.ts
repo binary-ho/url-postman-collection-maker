@@ -322,7 +322,10 @@ export class NetworkCaptureCLI {
       // Determine output file extension based on format
       const extensions = { markdown: 'md', json: 'json', html: 'html' };
       const extension = extensions[format];
-      const outputPath = `./api_documentation.${extension}`;
+
+      // 로컬 시간 YYMMDD_HHMMSS
+      const timestamp = new Date().toISOString().replace(/[-:]/g, '').slice(2, 15).replace('T', '_');
+      const outputPath = `./api_documentation_${timestamp}.${extension}`;
       
       const documentGenerator = createDocumentGenerator({
         format,

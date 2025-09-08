@@ -21,8 +21,9 @@ logs/
 # Optional npm cache directory
 .npm
 
-# Generated Postman collections (optional - users might want to keep these)
+# 프로그램 산출물
 *postman_collection*.json
+*api_documentation*.json
 
 # Playwright browsers
 /test-results/
