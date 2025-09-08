@@ -8,6 +8,7 @@ MockGen AI는 웹사이트의 네트워크 로그를 분석하여 자동으로 P
 
 - 🌐 **브라우저 자동화**: Playwright를 사용한 실시간 네트워크 캡처
 - 🤖 **AI 기반 생성**: Google Gemini AI로 지능적인 Postman Collection 생성
+- 📝 **AI 없는 문서화**: 네트워크 로그만으로 API 문서 자동 생성 (Markdown, JSON, HTML)
 - 🎯 **BFF 특화**: 블록 API 패턴 자동 인식 및 우선 처리
 - 🔧 **사용자 친화적**: 대화형 CLI 인터페이스 (gum 통합)
 - ⚙️ **유연한 설정**: YAML 기반 설정 파일
@@ -138,6 +139,121 @@ MockGen AI는 다음 7단계로 작동합니다:
 🎉 MockGen AI 실행 완료!
 ```
 
+## 📝 AI 없는 네트워크 로그 수집 및 문서화
+
+MockGen AI는 AI 없이도 네트워크 로그를 수집하여 구조화된 API 문서를 생성할 수 있습니다.
+
+### 사용법
+
+```bash
+just capture
+```
+
+### 단계별 워크플로우
+
+#### 1️⃣ URL 입력
+```
+📡 Starting Network Capture & Documentation...
+? 분석할 웹사이트 URL을 입력하세요: https://example.com
+```
+
+#### 2️⃣ 브라우저 자동 실행 및 네트워크 캡처
+- Chromium 브라우저가 자동으로 열립니다
+- 입력한 URL로 자동 이동합니다
+- 네트워크 요청 캡처가 시작됩니다
+
+#### 3️⃣ 사용자 상호작용
+```
+🌐 브라우저에서 필요한 작업을 수행하세요.
+📝 완료 후 이 터미널로 돌아와서 Enter를 누르세요...
+```
+
+#### 4️⃣ URL 선택
+```
+📋 캡처된 API 엔드포인트를 선택하세요:
+🌐 Select All URLs (Process all captured URLs)
+> GET /v1/blocks?keys=home.banner
+  POST /v1/users/profile
+  GET /v1/products/list
+```
+
+#### 5️⃣ 문서 형식 선택
+```
+📋 Please select documentation format:
+> 📝 Markdown (.md) - Human-readable documentation
+  📊 JSON (.json) - Structured data format
+  🌐 HTML (.html) - Web-viewable documentation
+```
+
+#### 6️⃣ 문서 생성 완료
+```
+✅ API documentation generated successfully
+📄 Format: MARKDOWN
+📊 Stats: 5 endpoints, 2 BFF APIs
+🎉 Network capture and documentation completed successfully!
+📋 Your API documentation is ready at: ./api_documentation.md
+```
+
+### 생성되는 문서 형식
+
+#### Markdown 문서 예시
+```markdown
+# API Documentation
+
+Generated on: 2025-09-08T10:17:00.000Z
+Total Endpoints: 5
+
+## Overview
+
+- **Total Endpoints**: 5
+- **BFF Block APIs**: 2
+- **Regular APIs**: 3
+- **Unique Hosts**: api.example.com
+- **HTTP Methods**: GET, POST
+
+## BFF Block APIs
+
+### GET /v1/blocks?keys=home.banner
+
+**Type**: BFF Block API
+**Host**: api.example.com
+
+**Query Parameters**:
+- `keys`: home.banner
+
+**Response Examples**:
+
+**Example 1** (Status: 200)
+```json
+{
+  "data": {
+    "home.banner": {
+      "title": "Welcome",
+      "image": "banner.jpg"
+    }
+  }
+}
+```
+
+#### JSON 문서 구조
+- `metadata`: 생성 정보 및 통계
+- `statistics`: 엔드포인트 통계
+- `apis`: 구조화된 API 정보 배열
+
+#### HTML 문서 특징
+- 웹 브라우저에서 바로 볼 수 있는 형식
+- 반응형 디자인
+- HTTP 메서드별 색상 구분
+- BFF API 배지 표시
+
+### 장점
+
+- **AI 키 불필요**: Google Gemini API 키 없이도 사용 가능
+- **빠른 실행**: AI 처리 시간 없이 즉시 문서 생성
+- **다양한 형식**: Markdown, JSON, HTML 지원
+- **구조화된 정보**: BFF API 패턴 자동 인식
+- **완전한 예시**: 실제 네트워크 응답 데이터 포함
+
 ## 🔧 환경 변수 설정
 
 MockGen AI는 민감한 정보만 환경 변수로 관리합니다. 다음 환경 변수들은 config.yaml 설정을 덮어씁니다:
@@ -215,8 +331,11 @@ filter:
 ## 🛠️ 사용 가능한 명령어
 
 ```bash
-# 메인 실행 명령어
+# AI 기반 Postman Collection 생성 (메인 기능)
 just mock
+
+# AI 없는 네트워크 로그 수집 및 API 문서 생성 (새로운 기능!)
+just capture
 
 # 프로젝트 설정 및 의존성 설치
 just setup

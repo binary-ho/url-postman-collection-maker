@@ -14,6 +14,11 @@ mock:
     @echo "🚀 Starting MockGen AI..."
     npx ts-node -r tsconfig-paths/register src/cli.ts
 
+# Capture network logs and generate API documentation without AI
+capture:
+    @echo "📡 Starting Network Capture & Documentation..."
+    npx ts-node -r tsconfig-paths/register src/captureCommand.ts
+
 # Run all tests
 test:
     @echo "🧪 Running tests..."

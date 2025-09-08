@@ -338,7 +338,8 @@ export class BrowserController {
       
       // Validate URL format
       new URL(url); // This will throw if URL is invalid
-      
+
+      // 네트워크 수집을 위해 일부러 commit으로 했음
       await this.page.goto(url, {
         waitUntil: 'commit', timeout: 60000
       });
@@ -402,7 +403,7 @@ export class BrowserController {
       this.isCapturing = true;
       console.log('🎬 Network capture started');
 
-      // Wait for user interaction
+      // Wait for user interaction (엔터 누르는거 대기)
       await this.waitForUserInput();
 
       // Stop capturing
